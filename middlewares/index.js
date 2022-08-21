@@ -1,9 +1,15 @@
-const { validationPut } = require('./validation');
-const { validationPost } = require('./validation');
-const ctrlWrapper = require('./ctrlWrapper');
+const {
+  validationPut,
+  validationPost,
+  validationPatch,
+} = require("./validation");
+const validateId = require("./validationId");
+const ctrlWrapper = require("./ctrlWrapper");
 
 module.exports = {
-    validationPut,
-    validationPost,
-    ctrlWrapper,
-}
+  validationPut,
+  validationPost,
+  ctrlWrapper,
+  validateId,
+  validationPatch,
+};
