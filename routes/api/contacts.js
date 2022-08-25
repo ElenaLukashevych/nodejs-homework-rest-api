@@ -6,15 +6,16 @@ const {
   ctrlWrapper,
   validateId,
   validationPatch,
+  auth,
 } = require("../../middlewares");
 const { joiSchema, joiSchemaStatusContact } = require("../../models");
 const { contacts: ctrl } = require("../../controllers");
 
-router.get("/", ctrlWrapper(ctrl.getAll));
+router.get("/", auth, ctrlWrapper(ctrl.getAll));
 
-router.get("/:contactId", validateId, ctrlWrapper(ctrl.getById));
+router.get("/:contactId", auth, validateId, ctrlWrapper(ctrl.getById));
 
-router.post("/", validationPost(joiSchema), ctrlWrapper(ctrl.add));
+router.post("/", auth, validationPost(joiSchema), ctrlWrapper(ctrl.add));
 
 router.delete("/:contactId", validateId, ctrlWrapper(ctrl.removeById));
 
