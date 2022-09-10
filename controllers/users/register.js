@@ -9,6 +9,8 @@ require("dotenv").config;
 const { HOST } = process.env;
 
 const register = async (req, res) => {
+    const verificationToken = v4();
+
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
@@ -16,7 +18,6 @@ const register = async (req, res) => {
   }
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   const avatarURL = gravatar.url(email);
-  const verificationToken = v4();
 
   const result = await User.create({
     email,
@@ -27,7 +28,7 @@ const register = async (req, res) => {
   const mail = {
     to: email,
     subject: "Mail confirmation",
-    html: `<a href="${HOST}/api/users/verify/:${verificationToken}" target="_blank">Click to confirm your email</a>`,
+    html: `<a href="${HOST}/api/users/verify/${verificationToken}" target="_blank">Click to confirm your email</a>`,
   };
   await sendEmail(mail);
   res.status(201).json({
@@ -37,6 +38,7 @@ const register = async (req, res) => {
       email,
       subscription: result.subscription,
       avatarURL,
+      verificationToken,
     },
   });
 };
